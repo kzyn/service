@@ -14,13 +14,14 @@ var logger service.Logger
 
 type Config struct {
 	Name, DisplayName, Description string
-
+/*
 	Dir  string
 	Exec string
 	Args []string
 	Env  []string
 
 	Stderr, Stdout string
+*/
 }
 
 type program struct {
@@ -46,36 +47,36 @@ func main() {
 	}
 
 	prg := &program{}
-	s, err := service.New(prg, svcConfig)
+	srv, err := service.New(prg, svcConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
-	logger, err = s.Logger(nil)
+	logger, err = srv.Logger(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	switch mode {
 	case "install":
-		err := s.Install()
+		err := srv.Install()
 		if err != nil {
 			logger.Error(err)
 			os.Exit(1)
 		}
 	case "remove":
-		err := s.Uninstall()
+		err := srv.Uninstall()
 		if err != nil {
 			logger.Error(err)
 			os.Exit(1)
 		}
 	case "stop":
-		s.Stop()
+		srv.Stop()
 		if err != nil {
 			logger.Error(err)
 			os.Exit(1)
 		}
 	case "run":
-		s.Run()
+		srv.Run()
 		if err != nil {
 			logger.Error(err)
 			os.Exit(1)
